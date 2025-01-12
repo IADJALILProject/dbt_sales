@@ -1,100 +1,172 @@
+`Voici une version structurée et organisée du README avec des sections bien délimitées :
 
-### Using the starter project
+---
 
-Try running the following commands:
+```markdown
+# dbt_sales
 
-- dbt run
-- 
-- dbt test
+**dbt_sales** est un projet de modélisation de données avec **dbt (Data Build Tool)**, conçu pour transformer des données brutes en insights analytiques prêts à être visualisés et exploités.
 
+---
 
-### Resources:
-- Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
+## 🛠️ Fonctionnalités principales
 
-- Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- 
-- Join the [chat](https://community.getdbt.com/) on Slack for live discussions and support
-- 
-- Find [dbt events](https://events.getdbt.com) near you
-- 
-- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
+### 🔹 Modélisation des données
+- Nettoyage et transformation des données avec des tables de staging.
+- Création de modèles analytiques pour les insights commerciaux et opérationnels.
+- Analyses avancées comme la segmentation client et les performances régionales.
 
-"# dbt_sales" 
+### 🔹 Orchestration automatisée
+- Orchestration complète via **Prefect**.
+- Suivi des exécutions dans le tableau de bord **Prefect Orion**.
 
-`📊 Analyses et KPI
+### 🔹 Tests de qualité des données
+- Tests préconfigurés pour valider l'intégrité des données (unicité, relations, non-nullité).
 
-Modèles analytiques :
+---
 
-Segmentation client :
+## 📂 Structure du projet
 
-Récence, fréquence, et montant des achats.
-Classification en segments : Actif, Inactif récent, etc.
+```
+dbt_sales/
+├── models/
+│   ├── marts/             # Modèles analytiques pour les KPI
+│   ├── staging/           # Tables intermédiaires pour les données brutes
+│   └── analysis/          # Modèles d'analyse (KPI, segmentation, etc.)
+├── seeds/                 # Fichiers CSV pour initialiser les données brutes
+├── macros/                # Fonctions réutilisables pour dbt
+├── tests/                 # Tests de validation personnalisés
+├── orchestrate_dbt_with_prefect.py  # Script pour l'orchestration avec Prefect
+├── dbt_project.yml        # Fichier de configuration dbt
+└── README.md              # Documentation du projet
+```
 
-Performance des ventes :
-Revenu par produit, région, et client.
+---
 
-Revenu par région :
+## 🚀 Étapes pour exécuter le projet
 
-Analyse des revenus par région et client.
+### 1️⃣ Configuration de dbt
+- Assurez-vous que votre fichier `profiles.yml` est correctement configuré avec votre base de données.
 
-Tableaux disponibles :
+### 2️⃣ Initialiser le projet
+```bash
+dbt debug
+```
 
-marts_sales : Détail des ventes (commandes, clients, produits, régions).
+### 3️⃣ Charger les données brutes
+```bash
+dbt seed
+```
 
-marts_customers : Analyse des dépenses clients.
+### 4️⃣ Exécuter les modèles
+```bash
+dbt run
+```
 
-marts_regions : Performance régionale.
+### 5️⃣ Valider les données
+```bash
+dbt test
+```
 
-🧪 Tests dbt
+### 6️⃣ Générer la documentation
+```bash
+dbt docs generate
+dbt docs serve
+```
 
-Le projet inclut des tests pour garantir la qualité des données :
+### 7️⃣ Orchestration avec Prefect
+- Lancez l'orchestration complète :
+```bash
+python orchestrate_dbt_with_prefect.py
+```
 
+---
 
-Tests de colonnes :
+## 📊 Analyses et KPI disponibles
 
-Non nullité (not_null).
+### 🔹 Segmentation client
+- Classification des clients en fonction de leur récence, fréquence, et montant des achats.
+- Résultat : `Actif`, `Inactif récent`, `Inactif ancien`.
 
-Unicité (unique).
+### 🔹 Performances des ventes
+- Analyse des revenus par produit, région, et client.
+- Résultat : Revenu total, commandes moyennes, et valeur moyenne des commandes.
 
-Relations (relationships).
+### 🔹 Revenus régionaux
+- Revenus totaux et moyens par région, ainsi que nombre de clients par région.
 
-Tests personnalisés :
+---
 
-Vérification des limites de valeurs (ex. montant positif).
+## 🧪 Tests dbt
 
-Correspondance des clés étrangères.
+Le projet inclut des tests de validation pour garantir la qualité des données :
+- **Tests automatiques** :
+  - Unicité des colonnes clés (`unique`).
+  - Relations clés étrangères (`relationships`).
+  - Non-nullité des données (`not_null`).
+- **Tests personnalisés** :
+  - Valeurs acceptées pour les métriques importantes (montants, commandes, etc.).
 
-⚙️ Orchestration Prefect
+---
 
-Le script orchestrate_dbt_with_prefect.py exécute toutes les étapes automatiquement :
+## ⚙️ Orchestration avec Prefect
 
+Le script **`orchestrate_dbt_with_prefect.py`** gère toutes les étapes automatiquement :
+1. Vérification de la configuration.
+2. Chargement des fichiers seed.
+3. Exécution des modèles et analyses.
+4. Tests de validation.
+5. Génération de documentation.
 
-Vérification (debug).
+Suivez l'exécution dans le tableau de bord Prefect Orion : [http://127.0.0.1:4200](http://127.0.0.1:4200).
 
-Chargement des seeds.
+---
 
-Exécution des modèles et analyses.
+## 📋 Pré-requis
 
-Tests de qualité.
+- **Python 3.10+**
+- **dbt-core 1.x**
+- **Prefect 2.x**
+- Base de données compatible (ex. : PostgreSQL, Snowflake).
 
-Génération de documentation.
+---
 
-Suivez l'exécution via le tableau de bord Prefect Orion.
+## 📝 À propos
 
+Ce projet a été développé pour fournir une solution complète de modélisation, analyse, et orchestration des données. Si vous avez des suggestions ou des questions, n'hésitez pas à ouvrir une issue ou une pull request.
 
-📋 Pré-requis
+---
 
-Python 3.10+
+## 📧 Contact
 
-dbt-core 1.x
+Pour toute question, contactez-moi à :
+- **Email** : salahbeydjalil@gmail.com
 
-Prefect 2.x
+---
 
-Base de données (PostgreSQL, Snowflake, etc.).
+## 🏆 Contributions
 
-📝 À propos
+Les contributions sont les bienvenues ! Merci de suivre ces étapes :
+1. Forkez le projet.
+2. Créez une branche pour vos modifications (`git checkout -b feature-nom`).
+3. Effectuez vos commits (`git commit -m "Ajout de XYZ"`).
+4. Poussez vos modifications (`git push origin feature-nom`).
+5. Ouvrez une pull request.
 
-Ce projet a été conçu pour transformer des données brutes en insights exploitables grâce à dbt. Si vous avez des suggestions ou des questions, 
+---
 
-n'hésitez pas à ouvrir une issue ou à proposer une pull request.
+**🎉 Merci de votre intérêt pour dbt_sales et bonne exploration !** 🚀
+```
 
+---
+
+### **Étapes pour intégrer ce README**
+1. Enregistrez ce contenu dans un fichier `README.md` à la racine de votre projet.
+2. Effectuez un commit :
+   ```bash
+   git add README.md
+   git commit -m "Ajout d'un README structuré"
+   git push origin main
+   ```
+
+Si vous avez besoin de modifications supplémentaires ou de sections spécifiques, n’hésitez pas à demander ! 😊`
