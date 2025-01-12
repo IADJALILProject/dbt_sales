@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: "Table de staging pour les données des clients. Nettoie et standardise les informations clients provenant des sources brutes."
+    columns:
+      - name: customer_id
+        description: "Identifiant unique du client."
+      - name: name
+        description: "Nom du client, standardisé en lettres minuscules."
+      - name: email
+        description: "Email du client, nettoyé et en lettres minuscules."
+      - name: created_at
+        description: "Date de création du compte client."
+
+  - name: stg_orders
+    description: "Table de staging pour les données des commandes. Prépare et nettoie les données de commande pour une utilisation dans les marts."
+    columns:
+      - name: order_id
+        description: "Identifiant unique de la commande."
+      - name: customer_id
+        description: "Identifiant du client associé à la commande."
+      - name: order_date
+        description: "Date de la commande, convertie en format timestamp."
+      - name: total_amount
+        description: "Montant total de la commande, standardisé au format numérique."
+
+  - name: stg_products
+    description: "Table de staging pour les données des produits. Nettoie et enrichit les informations produits provenant des sources brutes."
+    columns:
+      - name: product_id
+        description: "Identifiant unique du produit."
+      - name: name
+        description: "Nom du produit, standardisé en lettres minuscules."
+      - name: price
+        description: "Prix du produit, arrondi à deux décimales."
+
+  - name: stg_regions
+    description: "Table de staging pour les données régionales. Standardise et nettoie les noms des régions."
+    columns:
+      - name: region_id
+        description: "Identifiant unique de la région."
+      - name: region_name
+        description: "Nom de la région, avec une capitalisation appropriée."

@@ -1,0 +1,22 @@
+version: 2
+
+docs:
+  - name: introduction
+    description: >
+      Introduction générale au projet dbt_sales.
+      Ce projet vise à fournir des analyses robustes et des KPI stratégiques.
+      Consultez la section [introduction](introduction.md) pour plus de détails.
+
+  - name: definition_kpi
+    description: >
+      Découvrez la définition des KPI utilisés dans le projet, tels que :
+      - Chiffre d'affaires
+      - Panier moyen
+      - Taux de rétention
+      Consultez les détails dans [definition_kpi](definition_kpi.md).
+
+  - name: regles_metiers
+    description: >
+      Liste des règles métiers appliquées dans les transformations de données.
+      Ces règles garantissent la qualité des analyses.
+      Détails disponibles dans [regles_metiers](regles_metiers.md).

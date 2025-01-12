@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: public_raw
+    description: "Schéma contenant les données brutes provenant des fichiers seeds."
+    tables:
+      - name: customers
+        description: "Table des clients chargée depuis seeds/customers.csv."
+      - name: orders
+        description: "Table des commandes chargée depuis seeds/orders.csv."
+      - name: products
+        description: "Table des produits chargée depuis seeds/products.csv."
+      - name: regions
+        description: "Liste des régions pour les livraisons ou les entrepôts."

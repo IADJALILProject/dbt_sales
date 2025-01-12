@@ -1,0 +1,85 @@
+version: 2
+
+models:
+  - name: marts_sales
+    description: "Modèle analytique pour centraliser les données de ventes. Intègre les informations des clients, produits et régions pour des analyses avancées."
+    columns:
+      - name: order_id
+        description: "Identifiant unique de la commande."
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        description: "Identifiant du client associé à la commande."
+        tests:
+          - not_null
+      - name: order_date
+        description: "Date de la commande."
+        tests:
+          - not_null
+      - name: total_amount
+        description: "Montant total de la commande."
+        tests:
+          - not_null
+      - name: region_name
+        description: "Nom de la région associée à la commande."
+      - name: sales_month
+        description: "Mois de la commande, utilisé pour les analyses temporelles."
+        tests:
+          - not_null
+
+  - name: marts_products
+    description: "Modèle analytique pour suivre la performance des produits en termes de ventes et revenus."
+    columns:
+      - name: product_id
+        description: "Identifiant unique du produit."
+        tests:
+          - not_null
+          - unique
+      - name: product_name
+        description: "Nom du produit."
+        tests:
+          - not_null
+      - name: total_orders
+        description: "Nombre total de commandes pour le produit."
+        tests:
+          - not_null
+      - name: total_revenue
+        description: "Revenu total généré par le produit."
+        tests:
+          - not_null
+      - name: avg_order_value
+        description: "Valeur moyenne par commande pour le produit."
+        tests:
+          - not_null
+
+  - name: marts_customers
+    description: "Modèle analytique pour analyser le comportement et les dépenses des clients."
+    columns:
+      - name: customer_id
+        description: "Identifiant unique du client."
+        tests:
+          - not_null
+          - unique
+      - name: customer_name
+        description: "Nom du client."
+        tests:
+          - not_null
+      - name: email
+        description: "Email du client."
+        tests:
+          - not_null
+          - unique
+      - name: total_orders
+        description: "Nombre total de commandes passées par le client."
+        tests:
+          - not_null
+      - name: total_spent
+        description: "Montant total dépensé par le client."
+        tests:
+          - not_null
+      - name: avg_spent_per_order
+        description: "Montant moyen dépensé par commande pour le client."
+        tests:
+          - not_null
+

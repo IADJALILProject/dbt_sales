@@ -1,0 +1,27 @@
+version: 2
+
+analysis:
+  - name: panier_moyen
+    description: >
+      Calcul du panier moyen par client ou par commande. 
+      Ce KPI est essentiel pour suivre les tendances d'achat des clients.
+
+  - name: performance_region
+    description: >
+      Analyse des performances des régions en termes de chiffre d'affaires total, 
+      nombre de commandes, et revenus moyens.
+
+  - name: performance_ventes
+    description: >
+      Calcul des performances détaillées des ventes par produit ou catégorie, 
+      pour identifier les meilleures opportunités commerciales.
+
+  - name: revenu_client_region
+    description: >
+      Analyse des revenus par client et par région pour comprendre les segments 
+      géographiques les plus lucratifs.
+
+  - name: segmentation_client
+    description: >
+      Segmentation des clients basée sur des métriques clés comme la récence, 
+      la fréquence et le montant total des commandes (RFM).

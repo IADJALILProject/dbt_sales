@@ -1,0 +1,41 @@
+name: dbt_sales
+version: 1.0.0
+config-version: 2
+
+profile: dbt_sales
+
+# Chemins des ressources
+model-paths: ["models"]       # Contient les dossiers `staging` et `marts`
+analysis-paths: ["analysis"]  # Contient vos scripts d'analyse (KPI)
+macro-paths: ["macros"]       # Contient vos macros
+test-paths: ["tests"]         # Tests de qualité des données
+seed-paths: ["seeds"]         # Données sources (CSV : customers, orders, etc.)
+docs-paths: ["docs"]          # Documentation Markdown
+
+# Configuration par défaut des modèles
+models:
+  dbt_sales:
+    analysis:
+      +schema: analysis
+      +materialized: view
+    +materialized: table  # Tout est matérialisé en table par défaut
+    staging:
+      +schema: staging
+      +materialized: table  # Les modèles de staging sont matérialisés en table
+    marts:
+      +schema: marts
+      +materialized: table  # Les modèles des marts sont aussi matérialisés en table
+
+
+# Configuration des seeds (fichiers CSV)
+seeds:
+  dbt_sales:
+    +schema: raw
+    +quote_columns: true
+
+
+
+# Tests de qualité des données
+tests:
+  dbt_sales:
+    generic: ["tests"]
