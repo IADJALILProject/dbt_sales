@@ -13,9 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # 1. Récupérer le code source
     - name: Checkout code
       uses: actions/checkout@v3
 
+    # 2. Configurer Python et dbt
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
@@ -26,37 +28,46 @@ jobs:
         pip install dbt-core==1.9.1
         pip install dbt-postgres==1.9.0
 
+    # 3. Configurer les profils dbt
     - name: Set up dbt profiles
       run: |
         mkdir ~/.dbt
         echo "${{ secrets.DBT_PROFILE_DEV }}" > ~/.dbt/profiles.yml
 
+    # 4. Installer les dépendances dbt
     - name: Install dbt packages
       run: dbt deps
 
+    # 5. Tester la connexion dbt
     - name: Test dbt connection
       run: dbt debug
 
+    # 6. Valider les schémas dans PostgreSQL
     - name: Validate schemas
+      env:
+        PGPASSWORD: djalil1999
       run: |
         psql -U postgres -h localhost -d sales -c "SELECT schema_name FROM information_schema.schemata WHERE schema_name IN ('public', 'public_staging', 'public_marts', 'snapshots');"
 
+    # 7. Exécuter les snapshots dbt
     - name: Run dbt snapshots
       run: dbt snapshot --target dev
 
+    # 8. Exécuter les tests dbt
     - name: Run dbt tests
       run: dbt test --target dev
 
+    # 9. Exécuter les modèles incrémentiels dbt
     - name: Run dbt models (incremental)
       run: dbt run --selector incremental
 
+    # 10. Générer la documentation dbt
     - name: Generate dbt documentation
       run: dbt docs generate
 
+    # 11. Publier la documentation dbt comme artefact
     - name: Upload dbt documentation artifacts
       uses: actions/upload-artifact@v3
       with:
         name: dbt-docs
         path: target/
-
-
