@@ -27,7 +27,7 @@ jobs:
       run: |
         pip install dbt-core==1.9.1
         pip install dbt-postgres==1.9.0
-        pip install -r requirements.txt
+       
 
     # 3. Configurer les informations de connexion dbt
     - name: Set up dbt profiles
