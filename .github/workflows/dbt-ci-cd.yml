@@ -1,0 +1,65 @@
+name: dbt CI/CD for dbt_sales
+
+on:
+  push:
+    branches:
+      - main  # Exécute le pipeline sur la branche principale
+  pull_request:  # Exécute le pipeline sur les pull requests
+    branches:
+      - main
+
+jobs:
+  dbt-ci-cd:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Récupérer le code source
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # 2. Configurer Python et dbt
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+
+    - name: Install dbt and dependencies
+      run: |
+        pip install dbt-core==1.9.1
+        pip install dbt-postgres==1.9.0
+        pip install -r requirements.txt
+
+    # 3. Configurer les informations de connexion dbt
+    - name: Set up dbt profiles
+      run: |
+        mkdir ~/.dbt
+        echo "${{ secrets.DBT_PROFILE_DEV }}" > ~/.dbt/profiles.yml
+
+    # 4. Installer les dépendances dbt
+    - name: Install dbt packages
+      run: dbt deps
+
+    # 5. Tester la connexion et valider les dépendances
+    - name: Test dbt connection
+      run: dbt debug
+
+    # 6. Exécuter les tests dbt pour dev
+    - name: Run dbt tests
+      run: dbt test --target dev
+
+    # 7. Exécuter les modèles incrémentiels dbt
+    - name: Run dbt models (incremental)
+      run: |
+        dbt run --selector incremental
+
+    # 8. Générer la documentation dbt
+    - name: Generate dbt documentation
+      run: |
+        dbt docs generate
+
+    # 9. Publier la documentation (facultatif)
+    - name: Upload dbt documentation artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: dbt-docs
+        path: target/
