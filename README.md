@@ -1,11 +1,12 @@
-`Voici une version structurée et organisée du README avec des sections bien délimitées :
+
 
 ---
 
 ```markdown
 # dbt_sales
 
-**dbt_sales** est un projet de modélisation de données avec **dbt (Data Build Tool)**, conçu pour transformer des données brutes en insights analytiques prêts à être visualisés et exploités.
+**dbt_sales** est un projet de modélisation de données avec **dbt (Data Build Tool)**,
+ conçu pour transformer des données brutes en insights analytiques prêts à être visualisés et exploités.
 
 ---
 
