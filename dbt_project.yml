@@ -11,6 +11,8 @@ macro-paths: ["macros"]       # Contient vos macros
 test-paths: ["tests"]         # Tests de qualité des données
 seed-paths: ["seeds"]         # Données sources (CSV : customers, orders, etc.)
 docs-paths: ["docs"]          # Documentation Markdown
+snapshot-paths: ["snapshots"]
+
 
 # Configuration par défaut des modèles
 models:
@@ -21,7 +23,7 @@ models:
     +materialized: table  # Tout est matérialisé en table par défaut
     staging:
       +schema: staging
-      +materialized: table  # Les modèles de staging sont matérialisés en table
+      +materialized: incremental
     marts:
       +schema: marts
       +materialized: table  # Les modèles des marts sont aussi matérialisés en table
@@ -30,7 +32,7 @@ models:
 # Configuration des seeds (fichiers CSV)
 seeds:
   dbt_sales:
-    +schema: raw
+    +schema: public_raw
     +quote_columns: true
 
 
@@ -39,3 +41,12 @@ seeds:
 tests:
   dbt_sales:
     generic: ["tests"]
+
+
+# Snapshots
+snapshots:
+  dbt_sales:
+    +enabled: true
+    +tags: ["snapshot"]  # Facilite la sélection avec dbt run --selector
+
+

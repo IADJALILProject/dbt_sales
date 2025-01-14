@@ -1,0 +1,5 @@
+selectors:
+  - name: incremental
+    definition:
+      method: tag
+      value: incremental
