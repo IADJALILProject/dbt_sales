@@ -3,8 +3,8 @@ name: dbt CI/CD for dbt_sales
 on:
   push:
     branches:
-      - main  # Exécute le pipeline sur la branche principale
-  pull_request:  # Exécute le pipeline sur les pull requests
+      - main
+  pull_request:
     branches:
       - main
 
@@ -13,11 +13,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Récupérer le code source
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # 2. Configurer Python et dbt
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
@@ -27,39 +25,44 @@ jobs:
       run: |
         pip install dbt-core==1.9.1
         pip install dbt-postgres==1.9.0
-       
 
-    # 3. Configurer les informations de connexion dbt
     - name: Set up dbt profiles
       run: |
         mkdir ~/.dbt
         echo "${{ secrets.DBT_PROFILE_DEV }}" > ~/.dbt/profiles.yml
 
-    # 4. Installer les dépendances dbt
     - name: Install dbt packages
       run: dbt deps
 
-    # 5. Tester la connexion et valider les dépendances
     - name: Test dbt connection
       run: dbt debug
 
-    # 6. Exécuter les tests dbt pour dev
+    - name: Validate schemas
+      run: |
+        psql -U postgres -h localhost -d sales -c "SELECT schema_name FROM information_schema.schemata WHERE schema_name IN ('public', 'public_staging', 'public_marts', 'snapshots');"
+
+    - name: Run dbt snapshots
+      run: dbt snapshot --target dev
+
     - name: Run dbt tests
       run: dbt test --target dev
 
-    # 7. Exécuter les modèles incrémentiels dbt
     - name: Run dbt models (incremental)
-      run: |
-        dbt run --selector incremental
+      run: dbt run --selector incremental
 
-    # 8. Générer la documentation dbt
     - name: Generate dbt documentation
-      run: |
-        dbt docs generate
+      run: dbt docs generate
 
-    # 9. Publier la documentation (facultatif)
     - name: Upload dbt documentation artifacts
       uses: actions/upload-artifact@v3
       with:
         name: dbt-docs
         path: target/
+
+    - name: Notify on failure
+      if: failure()
+      uses: slackapi/slack-github-action@v1.23.0
+      with:
+        slack-token: ${{ secrets.SLACK_BOT_TOKEN }}
+        channel-id: YOUR_CHANNEL_ID
+        text: "Le pipeline dbt a échoué sur la branche ${{ github.ref_name }}"
