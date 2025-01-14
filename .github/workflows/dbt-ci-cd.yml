@@ -59,10 +59,4 @@ jobs:
         name: dbt-docs
         path: target/
 
-    - name: Notify on failure
-      if: failure()
-      uses: slackapi/slack-github-action@v1.23.0
-      with:
-        slack-token: ${{ secrets.SLACK_BOT_TOKEN }}
-        channel-id: YOUR_CHANNEL_ID
-        text: "Le pipeline dbt a échoué sur la branche ${{ github.ref_name }}"
+
