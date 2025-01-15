@@ -75,11 +75,7 @@ dbt docs generate
 dbt docs serve
 ```
 
-### 7️⃣ Orchestration avec Prefect
-- Lancez l'orchestration complète :
-```bash
-python orchestrate_dbt_with_prefect.py
-```
+
 
 ---
 
