@@ -109,68 +109,91 @@ Pour exécuter uniquement les modèles liés à un **tag spécifique** (par exem
 ```bash
 dbt run --select tag:customers
 ```
+Voici une version enrichie et organisée pour intégrer ces macros dans ton projet dbt. Cela inclut une explication sur leur rôle et leur utilisation.
 
-🌟 Utilisation de macros pour des calculs seuls
+---
+
+## 🌟 Utilisation de macros pour des calculs seuls
 
 Les macros permettent d'automatiser des calculs ou des transformations répétitives dans vos modèles dbt. Voici deux exemples courants de macros et comment les utiliser efficacement.
-Exemple 1 : Macro calculate_rate
-Définition
 
-La macro calculate_rate calcule un pourcentage basé sur un numérateur et un dénominateur, avec une gestion des cas où le dénominateur est égal à zéro.
+### Exemple 1 : Macro `calculate_rate`
 
+#### Définition
+La macro **`calculate_rate`** calcule un pourcentage basé sur un numérateur et un dénominateur, avec une gestion des cas où le dénominateur est égal à zéro.
+
+```sql
 {% macro calculate_rate(numerator, denominator) %}
     CASE
         WHEN {{ denominator }} = 0 THEN 0
         ELSE ROUND(({{ numerator }} * 100.0 / {{ denominator }}), 2)
     END
 {% endmacro %}
+```
 
-Utilisation
-
+#### Utilisation
 Appelons cette macro dans un modèle dbt pour calculer un taux de conversion :
 
+```sql
 SELECT
     user_id,
     {{ calculate_rate('completed_orders', 'total_orders') }} AS conversion_rate
 FROM {{ ref('orders') }}
+```
 
-Exemple 2 : Macro calculate_revenue_metrics
-Définition
+### Exemple 2 : Macro `calculate_revenue_metrics`
 
-La macro calculate_revenue_metrics calcule le revenu moyen par une unité donnée, avec une gestion des divisions par zéro.
+#### Définition
+La macro **`calculate_revenue_metrics`** calcule le revenu moyen par une unité donnée, avec une gestion des divisions par zéro.
 
+```sql
 {% macro calculate_revenue_metrics(total_revenue, count_value) %}
     CASE
         WHEN {{ count_value }} = 0 THEN 0
         ELSE ROUND({{ total_revenue }} / {{ count_value }}, 2)
     END
 {% endmacro %}
+```
 
-Utilisation
-
+#### Utilisation
 Appelons cette macro dans un modèle pour calculer le revenu moyen par utilisateur :
 
+```sql
 SELECT
     user_id,
     {{ calculate_revenue_metrics('total_revenue', 'active_days') }} AS avg_revenue_per_day
 FROM {{ ref('user_metrics') }}
+```
 
-🛠️ Exécution des macros seules
+---
 
+### 🛠️ Exécution des macros seules
 Ces macros sont principalement conçues pour être utilisées dans des modèles. Cependant, vous pouvez également les tester ou les exécuter indépendamment via la commande suivante :
 
+```bash
 dbt run-operation print_message --args '{"message": "Test de macro"}'
+```
 
 Pour tester une macro en ligne de commande, vous pouvez écrire une macro comme celle-ci :
 
+```sql
 {% macro test_calculate_rate() %}
     {% set result = calculate_rate(50, 100) %}
     {{ log(result, info=True) }}
 {% endmacro %}
+```
 
 Puis exécutez-la :
 
+```bash
 dbt run-operation test_calculate_rate
+```
+
+---
+
+Est-ce que cela répond à ton besoin ? Si tu veux que je développe une autre partie ou que je reformule, n'hésite pas !
+```
+
 
 ## 📊 Analyses et KPI disponibles
 
