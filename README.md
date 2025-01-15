@@ -44,36 +44,112 @@ dbt_sales/
 
 ---
 
+Ah, je vois ! Tu veux parler de l'utilisation de macros comme **fonctions utilitaires indépendantes** (et non intégrées directement dans des modèles). Voici une version modifiée et plus précise :
+
+---
+
 ## 🚀 Étapes pour exécuter le projet
 
 ### 1️⃣ Configuration de dbt
-- Assurez-vous que votre fichier `profiles.yml` est correctement configuré avec votre base de données.
+- Assurez-vous que votre fichier `profiles.yml` est correctement configuré pour se connecter à votre base de données.
+- Configurez les **snapshots** pour capturer l'état des données (via un fichier dédié comme `snapshot_config.yml`).
 
 ### 2️⃣ Initialiser le projet
+Validez la configuration de votre environnement dbt :
+
 ```bash
 dbt debug
 ```
 
 ### 3️⃣ Charger les données brutes
+Chargez les données initiales définies dans vos fichiers de seed :
+
 ```bash
 dbt seed
 ```
 
 ### 4️⃣ Exécuter les modèles
+Lancez toutes les transformations :
+
 ```bash
 dbt run
 ```
 
+Pour exécuter uniquement les modèles incrémentaux :
+
+```bash
+dbt run --selector incremental
+```
+
 ### 5️⃣ Valider les données
+Lancez vos tests pour vérifier l'intégrité et la qualité des données :
+
 ```bash
 dbt test
 ```
 
-### 6️⃣ Générer la documentation
+### 6️⃣ Utilisation des snapshots
+Pour capturer les états des données :
+
+```bash
+dbt snapshot
+```
+
+### 7️⃣ Générer la documentation
+Créez et servez une documentation interactive :
+
 ```bash
 dbt docs generate
 dbt docs serve
 ```
+
+### 8️⃣ Utilisation des tags
+Pour exécuter uniquement les modèles liés à un **tag spécifique** (par exemple, `customers`) :
+
+```bash
+dbt run --select tag:customers
+```
+
+### 9️⃣ Utilisation des macros indépendantes
+Les **macros** permettent de créer des fonctions réutilisables pour des tâches spécifiques. Voici comment les utiliser :
+
+#### Exemple de création d'une macro
+Dans le fichier `macros/utility_macros.sql`, ajoute une macro comme suit :
+
+```sql
+{% macro format_date(date_column) %}
+    CAST({{ date_column }} AS DATE)
+{% endmacro %}
+```
+
+#### Exemple d'utilisation
+Appelle cette macro dans un modèle SQL ou un script SQL dbt :
+
+```sql
+SELECT
+    {{ format_date('created_at') }} AS formatted_date,
+    user_id
+FROM {{ ref('users') }}
+```
+
+#### Exemple de macro exécutée seule
+Certaines macros peuvent être exécutées directement depuis la ligne de commande. Par exemple :
+
+1. Définis une macro pour afficher un message :
+    ```sql
+    {% macro print_message(message) %}
+        {{ log(message, info=True) }}
+    {% endmacro %}
+    ```
+
+2. Exécute cette macro directement depuis dbt :
+    ```bash
+    dbt run-operation print_message --args '{"message": "Hello, dbt!"}'
+    ```
+
+---
+
+Est-ce que cela répond mieux à ton besoin ? Je peux détailler davantage si nécessaire !
 
 
 
